@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetica | Modern & Artistic Journals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Modern UI Styling (CSS is unchanged) --- */
+        :root {
+            --bg-color: #111111;
+            --text-color: #f0f0f0;
+            --primary-accent-color: #f59e0b; /* Amber */
+            --secondary-bg-color: #1c1c1c;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --font-serif: 'Lora', serif;
+            --font-sans: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: var(--font-sans);
+            color: var(--text-color);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        button {
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        
+        /* --- SCROLL-IN ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Header & Navigation (Glassmorphism) --- */
+        .main-header {
+            background-color: rgba(17, 17, 17, 0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.875rem;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: none;
+        }
+        
+        .nav-links a {
+            color: #a0a0a0;
+            transition: color 0.2s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-accent-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-actions button, .nav-actions .cart-button {
+             margin-left: 1.25rem;
+             color: #a0a0a0;
+             transition: color 0.2s ease;
+        }
+        
+        .nav-actions button:hover, .nav-actions .cart-button:hover {
+            color: white;
+        }
+        
+        .nav-actions svg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+        
+        .cart-button {
+            position: relative;
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background-color: var(--primary-accent-color);
+            color: var(--bg-color);
+            font-weight: 600;
+            font-size: 0.75rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- Hero Section with Aurora Background --- */
+        .hero-section {
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Aurora effect */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1200px;
+            height: 1200px;
+            background-image: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, rgba(17, 17, 17, 0) 60%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            transition: transform 0.5s ease-out;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 48rem;
+        }
+
+        .hero-section h1 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.125rem;
+            color: #a0a0a0;
+            margin-bottom: 2.5rem;
+            max-width: 36rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            font-weight: 600;
+            padding: 0.8rem 2.25rem;
+            border-radius: 9999px;
+            transition: all 0.2s ease-in-out;
+            border: 2px solid transparent;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-accent-color);
+            color: var(--bg-color);
+        }
+        .btn-primary:hover {
+            background-color: #ffb53b;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+        
+        /* --- Products Section (Broken Grid) --- */
+        .products-section {
+            background-color: var(--secondary-bg-color);
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+            position: relative;
+        }
+        
+        .products-section h2 {
+            font-family: var(--font-serif);
+            font-size: 2.75rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        #product-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        .product-card {
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(245, 158, 11, 0.5);
+            box-shadow: 0 0 40px rgba(245, 158, 11, 0.1);
+        }
+        
+        .product-card img {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .product-card-info {
+            padding: 1.5rem;
+        }
+        
+        .product-card-info h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-card-info p {
+            color: var(--primary-accent-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .view-all-link {
+            text-align: center;
+            margin-top: 4rem;
+        }
+        .btn-secondary {
+            border-color: var(--primary-accent-color);
+            color: var(--primary-accent-color);
+        }
+        .btn-secondary:hover {
+            background-color: var(--primary-accent-color);
+            color: var(--bg-color);
+        }
+        
+        #loading-state, #error-state {
+            text-align: center;
+            padding: 4rem;
+            color: #a0a0a0;
+        }
+
+        /* --- Footer --- */
+        .main-footer {
+            padding: 4rem 0 2rem 0;
+            text-align: center;
+        }
+        
+        .main-footer .logo {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links a {
+            color: #a0a0a0;
+            transition: color 0.2s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-copyright {
+            color: #666;
+            font-size: 0.875rem;
+        }
+        
+        /* --- Media Queries for Responsiveness --- */
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+            }
+            .hero-section h1 {
+                font-size: 5rem;
+            }
+            #product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+             /* Staggered grid effect on tablet up */
+            .product-card:nth-child(2n) {
+                margin-top: 3rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            #product-grid {
+                grid-template-columns: repeat(3, 1fr);
+                 gap: 2.5rem;
+            }
+            /* Staggered grid effect on desktop */
+            .product-card:nth-child(2n) {
+                margin-top: 4rem;
+            }
+             .product-card:nth-child(3n) {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <nav class="main-nav container">
+            <a href="#" class="logo">Aesthetica</a>
+            <div class="nav-links">
+                <a href="#">Catalog</a>
+                <a href="#">Subscriptions</a>
+                <a href="#">About</a>
+            </div>
+            <div class="nav-actions">
+                <button title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+                </button>
+                <button title="My Account">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                </button>
+                <a href="#" class="cart-button" title="Shopping Cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.344 1.087-.849l1.874-6.126A1.875 1.875 0 0018.25 6H5.23a2.25 2.25 0 00-2.115 1.634l-1.875 6.126zM7.5 14.25 6.375 5.25m11.938 9L17.25 5.25" /></svg>
+                    <span class="cart-badge">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content container reveal">
+                <h1>Where Your Thoughts Find a Home.</h1>
+                <p>Unleash your creativity with our exclusive collection of digital and physical journals, crafted for the modern artist, writer, and dreamer.</p>
+                <a href="#" class="btn btn-primary">Explore The Collection</a>
+            </div>
+        </section>
+
+        <section class="products-section">
+            <div class="container">
+                <h2 class="reveal">Featured Collection</h2>
+                <div id="product-grid">
+                    <!-- Products will be dynamically injected here by JavaScript -->
+                    <div id="loading-state">
+                        <p>Loading our collection...</p>
+                    </div>
+                </div>
+                <div class="view-all-link reveal">
+                     <a href="#" class="btn btn-secondary">View All Products</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p class="logo">Aesthetica</p>
+            <div class="footer-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">License Terms</a>
+            </div>
+            <p class="footer-copyright">&copy; 2025 Aesthetica. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Modern UI JavaScript with API Connection ---
+
+        // Aurora background effect (unchanged)
+        const hero = document.querySelector('.hero-section');
+        if (hero) {
+            hero.addEventListener('mousemove', (e) => {
+                const { clientX, clientY } = e;
+                const { offsetWidth, offsetHeight } = hero;
+                const x = (clientX / offsetWidth) * 100;
+                const y = (clientY / offsetHeight) * 100;
+                if(hero.querySelector('::before')){
+                     hero.querySelector('::before').style.transform = `translate(calc(-50% + ${x/4}px), calc(-50% + ${y/4}px))`;
+                }
+            });
+        }
+
+        // Scroll-reveal animations (unchanged)
+        function initializeScrollReveal() {
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            revealElements.forEach(el => observer.observe(el));
+        }
+
+        // --- NEW: Backend API Connection ---
+        const API_BASE_URL = 'http://127.0.0.1:8000';
+        
+        async function fetchAndDisplayProducts() {
+            const productGrid = document.getElementById('product-grid');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/products`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const products = await response.json();
+
+                // Clear the loading state
+                productGrid.innerHTML = ''; 
+
+                if (products.length === 0) {
+                    productGrid.innerHTML = '<div id="loading-state"><p>No products found in our collection yet.</p></div>';
+                    return;
+                }
+
+                // Create and append product cards
+                products.forEach(product => {
+                    const card = document.createElement('a');
+                    card.href = '#'; // In the future, this would be `/product/${product.id}`
+                    card.className = 'product-card reveal';
+                    
+                    card.innerHTML = `
+                        <div class="product-card-image-wrapper">
+                           <img src="${product.image_url}" alt="${product.title}">
+                        </div>
+                        <div class="product-card-info">
+                            <h3>${product.title}</h3>
+                            <p>₹${product.price_inr}</p>
+                        </div>
+                    `;
+                    productGrid.appendChild(card);
+                });
+                
+                // Re-initialize scroll animations for the new elements
+                initializeScrollReveal();
+
+            } catch (error) {
+                console.error("Failed to fetch products:", error);
+                productGrid.innerHTML = '<div id="error-state"><p>Could not load products. Please ensure the backend server is running.</p></div>';
+            }
+        }
+        
+        // Run functions when the page content is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeScrollReveal(); // For elements already in HTML
+            fetchAndDisplayProducts(); // Fetch data from backend
+        });
+    </script>
+</body>
+</html>
+
