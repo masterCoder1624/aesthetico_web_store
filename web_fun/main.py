@@ -23,6 +23,7 @@ origins = [
     "null", # Allows local file access (opening index.html directly)
     "http://localhost",
     "http://localhost:8080",
+    "https://aesthetica-web-store-frontend.onrender.com",
 ]
 
 app.add_middleware(
@@ -161,4 +162,5 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
 # --- 6. How to Run ---
 # uvicorn main:app --reload
+
 
