@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS is largely unchanged, with additions for the modal --- */
+        /* CSS is mostly unchanged, with additions for the detail view and user avatar */
         :root {
             --bg-color: #111111;
             --text-color: #f0f0f0;
@@ -22,12 +22,15 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body { background-color: var(--bg-color); font-family: var(--font-sans); color: var(--text-color); -webkit-font-smoothing: antialiased; line-height: 1.6; overflow-x: hidden; }
         .container { width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
         a { color: inherit; text-decoration: none; }
         img { max-width: 100%; height: auto; display: block; }
         button { border: none; background: none; cursor: pointer; }
         
+        .hidden { display: none !important; }
+
         .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -45,10 +48,11 @@
         .nav-actions svg { width: 1.5rem; height: 1.5rem; }
         .cart-button { position: relative; }
         .cart-badge { position: absolute; top: -0.5rem; right: -0.5rem; background-color: var(--primary-accent-color); color: var(--bg-color); font-weight: 600; font-size: 0.75rem; width: 1.25rem; height: 1.25rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; }
+        
+        /* NEW: User Avatar Style */
+        .user-avatar { width: 2.25rem; height: 2.25rem; background-color: var(--primary-accent-color); color: var(--bg-color); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; }
 
         .hero-section { padding-top: 6rem; padding-bottom: 6rem; position: relative; overflow: hidden; }
-        .hero-section::before { content: ''; position: absolute; top: 50%; left: 50%; width: 1200px; height: 1200px; background-image: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, rgba(17, 17, 17, 0) 60%); transform: translate(-50%, -50%); pointer-events: none; transition: transform 0.5s ease-out; z-index: -1; }
-        .hero-content { max-width: 48rem; }
         .hero-section h1 { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; }
         .hero-section p { font-size: 1.125rem; color: #a0a0a0; margin-bottom: 2.5rem; max-width: 36rem; }
         
@@ -59,26 +63,24 @@
         .products-section { background-color: var(--secondary-bg-color); padding-top: 6rem; padding-bottom: 6rem; position: relative; }
         .products-section h2 { font-family: var(--font-serif); font-size: 2.75rem; font-weight: 700; text-align: center; margin-bottom: 4rem; }
         #product-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-        .product-card { border: 1px solid var(--border-color); background-color: var(--bg-color); border-radius: 0.75rem; overflow: hidden; transition: all 0.3s ease; }
+        .product-card { border: 1px solid var(--border-color); background-color: var(--bg-color); border-radius: 0.75rem; overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
         .product-card:hover { transform: translateY(-10px); border-color: rgba(245, 158, 11, 0.5); box-shadow: 0 0 40px rgba(245, 158, 11, 0.1); }
         .product-card img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; transition: transform 0.4s ease; }
         .product-card:hover img { transform: scale(1.05); }
         .product-card-info { padding: 1.5rem; }
         .product-card-info h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
         .product-card-info p { color: var(--primary-accent-color); font-size: 1.1rem; font-weight: 600; }
-        .view-all-link { text-align: center; margin-top: 4rem; }
-        .btn-secondary { border-color: var(--primary-accent-color); color: var(--primary-accent-color); }
-        .btn-secondary:hover { background-color: var(--primary-accent-color); color: var(--bg-color); }
-        #loading-state, #error-state { text-align: center; padding: 4rem; color: #a0a0a0; }
 
-        .main-footer { padding: 4rem 0 2rem 0; text-align: center; }
-        .main-footer .logo { font-size: 1.5rem; margin-bottom: 1.5rem; }
-        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
-        .footer-links a { color: #a0a0a0; transition: color 0.2s ease; }
-        .footer-links a:hover { color: white; }
-        .footer-copyright { color: #666; font-size: 0.875rem; }
+        /* --- NEW: Product Detail View Styles --- */
+        #product-detail-view { padding-top: 4rem; padding-bottom: 6rem; }
+        .product-detail-content { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: start; }
+        .product-detail-image-wrapper { border-radius: 1rem; overflow: hidden; border: 1px solid var(--border-color); }
+        .product-detail-info h1 { font-family: var(--font-serif); font-size: 2.5rem; line-height: 1.2; margin-bottom: 1rem; }
+        .product-detail-info .price { color: var(--primary-accent-color); font-size: 1.75rem; font-weight: 600; margin-bottom: 1.5rem; }
+        .product-detail-info .description { color: #a0a0a0; margin-bottom: 2.5rem; line-height: 1.8; }
+        .back-to-catalog { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; color: #a0a0a0; transition: color 0.2s ease; }
+        .back-to-catalog:hover { color: white; }
 
-        /* --- NEW: Auth Modal Styles --- */
         .auth-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .auth-modal-overlay.visible { opacity: 1; visibility: visible; }
         .auth-modal { background-color: var(--secondary-bg-color); border-radius: 1rem; padding: 2.5rem; width: 100%; max-width: 400px; border: 1px solid var(--border-color); position: relative; transform: scale(0.95); transition: transform 0.3s ease; }
@@ -100,17 +102,25 @@
         .auth-toggle button:hover { text-decoration: underline; }
         
         #register-form { display: none; }
+
+        .main-footer { padding: 4rem 0 2rem 0; text-align: center; }
+        .main-footer .logo { font-size: 1.5rem; margin-bottom: 1.5rem; }
+        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
+        .footer-links a { color: #a0a0a0; transition: color 0.2s ease; }
+        .footer-links a:hover { color: white; }
+        .footer-copyright { color: #666; font-size: 0.875rem; }
         
         @media (min-width: 768px) {
             .nav-links { display: flex; align-items: center; gap: 2rem; }
             .hero-section h1 { font-size: 5rem; }
             #product-grid { grid-template-columns: repeat(2, 1fr); }
             .product-card:nth-child(2n) { margin-top: 3rem; }
+            .product-detail-content { grid-template-columns: repeat(2, 1fr); gap: 4rem; }
         }
         @media (min-width: 1024px) {
             #product-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
             .product-card:nth-child(2n) { margin-top: 4rem; }
-            .product-card:nth-child(3n) { margin-top: 0; }
+             .product-card:nth-child(3n) { margin-top: 0; }
         }
     </style>
 </head>
@@ -126,10 +136,13 @@
             </div>
             <div class="nav-actions">
                 <button title="Search">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
                 </button>
                 <button title="My Account" id="account-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                    <!-- This content will be replaced by JS on login -->
+                    <div id="account-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                    </div>
                 </button>
                 <a href="#" class="cart-button" title="Shopping Cart">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.344 1.087-.849l1.874-6.126A1.875 1.875 0 0018.25 6H5.23a2.25 2.25 0 00-2.115 1.634l-1.875 6.126zM7.5 14.25 6.375 5.25m11.938 9L17.25 5.25" /></svg>
@@ -139,204 +152,228 @@
         </nav>
     </header>
 
-    <main>
+    <main id="main-content">
         <section class="hero-section">
-            <div class="hero-content container reveal">
+             <div class="hero-content container reveal">
                 <h1>Where Your Thoughts Find a Home.</h1>
                 <p>Unleash your creativity with our exclusive collection of digital and physical journals, crafted for the modern artist, writer, and dreamer.</p>
-                <a href="#" class="btn btn-primary">Explore The Collection</a>
+                <a href="#products-section" class="btn btn-primary">Explore The Collection</a>
             </div>
         </section>
-
-        <section class="products-section">
+        <section class="products-section" id="products-section">
             <div class="container">
                 <h2 class="reveal">Featured Collection</h2>
                 <div id="product-grid">
                     <div id="loading-state"><p>Loading our collection...</p></div>
                 </div>
-                <div class="view-all-link reveal">
-                     <a href="#" class="btn btn-secondary">View All Products</a>
-                </div>
             </div>
         </section>
     </main>
+
+    <!-- NEW: Product Detail View (initially hidden) -->
+    <section id="product-detail-view" class="hidden">
+        <div class="container">
+             <button class="back-to-catalog" id="back-to-catalog-button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.25rem; height:1.25rem;"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
+                <span>Back to Collection</span>
+            </button>
+            <div id="product-detail-content" class="product-detail-content">
+                <!-- Content will be injected by JS -->
+            </div>
+        </div>
+    </section>
 
     <footer class="main-footer">
         <div class="container">
             <p class="logo">Aesthetica</p>
             <div class="footer-links">
-                <a href="#">Terms & Conditions</a> <a href="#">Privacy Policy</a> <a href="#">License Terms</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">License Terms</a>
             </div>
             <p class="footer-copyright">&copy; 2025 Aesthetica. All Rights Reserved.</p>
         </div>
     </footer>
     
-    <!-- NEW: Authentication Modal -->
     <div class="auth-modal-overlay" id="auth-modal-overlay">
         <div class="auth-modal">
             <button class="auth-modal-close" id="auth-modal-close">&times;</button>
             
             <!-- Login Form -->
             <div id="login-form">
-                <div class="auth-modal-header">
-                    <h2>Welcome Back</h2>
-                    <p>Log in to access your account.</p>
-                </div>
+                 <div class="auth-modal-header"><h2>Welcome Back</h2><p>Log in to access your account.</p></div>
                 <form class="auth-form" id="login-form-element">
-                    <div class="form-group">
-                        <label for="login-email">Email Address</label>
-                        <input type="email" id="login-email" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="login-password">Password</label>
-                        <input type="password" id="login-password" class="form-input" required>
-                    </div>
+                    <div class="form-group"><label for="login-email">Email Address</label><input type="email" id="login-email" class="form-input" required></div>
+                    <div class="form-group"><label for="login-password">Password</label><input type="password" id="login-password" class="form-input" required></div>
                     <div class="form-message" id="login-message"></div>
                     <button type="submit" class="btn btn-primary">Login</button>
                 </form>
-                 <div class="auth-toggle">
-                    <span>Don't have an account?</span>
-                    <button id="show-register-button">Sign Up</button>
-                </div>
+                 <div class="auth-toggle"><span>Don't have an account?</span><button id="show-register-button">Sign Up</button></div>
             </div>
 
             <!-- Registration Form -->
             <div id="register-form">
-                 <div class="auth-modal-header">
-                    <h2>Create Account</h2>
-                    <p>Join our community of creators.</p>
-                </div>
+                 <div class="auth-modal-header"><h2>Create Account</h2><p>Join our community of creators.</p></div>
                 <form class="auth-form" id="register-form-element">
-                    <div class="form-group">
-                        <label for="register-name">Full Name</label>
-                        <input type="text" id="register-name" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-email">Email Address</label>
-                        <input type="email" id="register-email" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-password">Password</label>
-                        <input type="password" id="register-password" class="form-input" required minlength="6">
-                    </div>
+                    <div class="form-group"><label for="register-name">Full Name</label><input type="text" id="register-name" class="form-input" required></div>
+                    <div class="form-group"><label for="register-email">Email Address</label><input type="email" id="register-email" class="form-input" required></div>
+                    <div class="form-group"><label for="register-password">Password</label><input type="password" id="register-password" class="form-input" required minlength="6"></div>
                     <div class="form-message" id="register-message"></div>
                     <button type="submit" class="btn btn-primary">Create Account</button>
                 </form>
-                 <div class="auth-toggle">
-                    <span>Already have an account?</span>
-                    <button id="show-login-button">Login</button>
-                </div>
+                 <div class="auth-toggle"><span>Already have an account?</span><button id="show-login-button">Login</button></div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- Modern UI JavaScript with API Connection & Auth ---
-
         const API_BASE_URL = 'https://aesthetico-web-store.onrender.com';
-
-        // --- Event Listeners and Functions from before (unchanged) ---
-        function initializeScrollReveal() { /* ... unchanged ... */ }
-        async function fetchAndDisplayProducts() { /* ... unchanged ... */ }
         
         document.addEventListener('DOMContentLoaded', () => {
-            // Re-implementing functions here to keep the code block self-contained
-            
-            // Aurora background effect
-            const hero = document.querySelector('.hero-section');
-            if (hero) {
-                hero.addEventListener('mousemove', (e) => {
-                    const { clientX, clientY } = e;
-                    const { offsetWidth, offsetHeight } = hero;
-                    const x = (clientX / offsetWidth) * 100;
-                    const y = (clientY / offsetHeight) * 100;
-                    if(hero.style){
-                        hero.style.setProperty('--mouse-x', `${x}%`);
-                        hero.style.setProperty('--mouse-y', `${y}%`);
-                    }
-                });
-            }
+            const mainContent = document.getElementById('main-content');
+            const productDetailView = document.getElementById('product-detail-view');
+            const productDetailContent = document.getElementById('product-detail-content');
+            const backToCatalogButton = document.getElementById('back-to-catalog-button');
 
-            // Scroll-reveal animations
-            const revealElements = document.querySelectorAll('.reveal');
+            // Function to show main view and hide detail view
+            const showMainView = () => {
+                mainContent.classList.remove('hidden');
+                productDetailView.classList.add('hidden');
+            };
+            
+            // Function to show detail view and hide main view
+            const showDetailView = () => {
+                mainContent.classList.add('hidden');
+                productDetailView.classList.remove('hidden');
+                window.scrollTo(0, 0); // Scroll to top
+            };
+
+            // Initialize back button
+            backToCatalogButton.addEventListener('click', showMainView);
+
+            // Fetch and display a single product
+            async function fetchAndDisplayProductDetail(productId) {
+                productDetailContent.innerHTML = `<p style="text-align:center; padding: 4rem 0;">Loading product details...</p>`;
+                showDetailView();
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/products/${productId}`);
+                    if (!response.ok) throw new Error('Product not found.');
+                    const product = await response.json();
+                    
+                    productDetailContent.innerHTML = `
+                        <div class="product-detail-image-wrapper reveal visible">
+                            <img src="${product.image_url}" alt="${product.title}">
+                        </div>
+                        <div class="product-detail-info reveal visible">
+                            <h1>${product.title}</h1>
+                            <p class="price">₹${product.price_inr}</p>
+                            <p class="description">${product.long_description}</p>
+                            <button class="btn btn-primary" style="width:100%;">Add to Cart</button>
+                        </div>
+                    `;
+                } catch (error) {
+                    productDetailContent.innerHTML = `<p style="text-align:center; padding: 4rem 0; color: var(--error-color);">${error.message}</p>`;
+                }
+            }
+            
+            // Initialize scroll reveal observer
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) entry.target.classList.add('visible');
                 });
             }, { threshold: 0.1 });
-            revealElements.forEach(el => observer.observe(el));
-            
-            // --- Fetch Products on Load ---
+
+            // Fetch all products and set up click listeners
             (async function fetchAndDisplayProducts() {
                 const productGrid = document.getElementById('product-grid');
                 try {
-                    const response = await fetch(`${API_BASE_URL}/api/products`);
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    const products = await response.json();
-                    productGrid.innerHTML = ''; 
-                    if (products.length === 0) {
-                        productGrid.innerHTML = '<div id="loading-state"><p>No products found.</p></div>';
-                        return;
-                    }
-                    products.forEach(product => {
-                        const card = document.createElement('a');
-                        card.href = '#';
+                     const response = await fetch(`${API_BASE_URL}/api/products`);
+                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                     const products = await response.json();
+                     productGrid.innerHTML = '';
+                     products.forEach(product => {
+                        const card = document.createElement('div');
                         card.className = 'product-card reveal';
+                        card.dataset.productId = product.id;
                         card.innerHTML = `
                             <div class="product-card-image-wrapper"><img src="${product.image_url}" alt="${product.title}"></div>
                             <div class="product-card-info"><h3>${product.title}</h3><p>₹${product.price_inr}</p></div>
                         `;
+                        card.addEventListener('click', () => fetchAndDisplayProductDetail(product.id));
                         productGrid.appendChild(card);
                     });
                     const newRevealElements = productGrid.querySelectorAll('.reveal');
                     newRevealElements.forEach(el => observer.observe(el));
-                } catch (error) {
+                } catch(error) {
                     console.error("Failed to fetch products:", error);
-                    productGrid.innerHTML = '<div id="error-state"><p>Could not load products. Please ensure the backend server is running.</p></div>';
+                    productGrid.innerHTML = '<p style="text-align:center; padding: 4rem 0; color: var(--error-color);">Could not load products. Please try again later.</p>';
                 }
             })();
 
-            // --- NEW: Auth Modal Logic ---
-            const authModalOverlay = document.getElementById('auth-modal-overlay');
+            // All Modal and Auth logic
             const accountButton = document.getElementById('account-button');
+            const authModalOverlay = document.getElementById('auth-modal-overlay');
             const closeModalButton = document.getElementById('auth-modal-close');
-            
             const loginForm = document.getElementById('login-form');
             const registerForm = document.getElementById('register-form');
             const showRegisterButton = document.getElementById('show-register-button');
             const showLoginButton = document.getElementById('show-login-button');
-
             const loginFormElement = document.getElementById('login-form-element');
             const registerFormElement = document.getElementById('register-form-element');
 
-            const loginMessage = document.getElementById('login-message');
-            const registerMessage = document.getElementById('register-message');
-
             const showModal = () => authModalOverlay.classList.add('visible');
             const hideModal = () => authModalOverlay.classList.remove('visible');
-
+            
             accountButton.addEventListener('click', showModal);
             closeModalButton.addEventListener('click', hideModal);
-            authModalOverlay.addEventListener('click', (e) => {
-                if (e.target === authModalOverlay) hideModal();
+            authModalOverlay.addEventListener('click', (e) => { if (e.target === authModalOverlay) hideModal(); });
+            showRegisterButton.addEventListener('click', () => { loginForm.style.display = 'none'; registerForm.style.display = 'block'; });
+            showLoginButton.addEventListener('click', () => { registerForm.style.display = 'none'; loginForm.style.display = 'block'; });
+
+            // Login Form Submission
+            loginFormElement.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const loginMessage = document.getElementById('login-message');
+                loginMessage.textContent = 'Logging in...';
+                loginMessage.className = 'form-message';
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                const formData = new URLSearchParams();
+                formData.append('username', email);
+                formData.append('password', password);
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/auth/token`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: formData.toString()
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to log in.');
+
+                    const accountIconWrapper = document.getElementById('account-icon-wrapper');
+                    const user = data.user;
+                    if (user && user.full_name) {
+                        const initials = user.full_name.split(' ').map(n => n[0]).join('').toUpperCase();
+                        accountIconWrapper.innerHTML = `<div class="user-avatar">${initials}</div>`;
+                    }
+                    
+                    loginMessage.textContent = 'Login successful!';
+                    loginMessage.classList.add('success');
+                    setTimeout(hideModal, 1500);
+
+                } catch(error) {
+                    loginMessage.textContent = 'Incorrect email or password.';
+                    loginMessage.classList.add('error');
+                }
             });
 
-            showRegisterButton.addEventListener('click', () => {
-                loginForm.style.display = 'none';
-                registerForm.style.display = 'block';
-            });
-
-            showLoginButton.addEventListener('click', () => {
-                registerForm.style.display = 'none';
-                loginForm.style.display = 'block';
-            });
-            
-            // --- Registration Form Submission ---
+            // Registration Form Submission
             registerFormElement.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                const registerMessage = document.getElementById('register-message');
                 registerMessage.textContent = 'Creating account...';
                 registerMessage.className = 'form-message';
-
                 const name = document.getElementById('register-name').value;
                 const email = document.getElementById('register-email').value;
                 const password = document.getElementById('register-password').value;
@@ -347,19 +384,12 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ full_name: name, email, password })
                     });
-                    
                     const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.detail || 'Failed to register.');
-                    }
+                    if (!response.ok) throw new Error(data.detail || 'Failed to register.');
                     
-                    registerMessage.textContent = 'Account created successfully! Please log in.';
+                    registerMessage.textContent = 'Account created! Please log in.';
                     registerMessage.classList.add('success');
-                    setTimeout(() => { // Switch to login form after success
-                        registerForm.style.display = 'none';
-                        loginForm.style.display = 'block';
-                    }, 2000);
+                    setTimeout(() => { showRegisterButton.click(); }, 2000);
 
                 } catch (error) {
                     registerMessage.textContent = error.message;
@@ -367,44 +397,8 @@
                 }
             });
 
-            // --- Login Form Submission ---
-            loginFormElement.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                loginMessage.textContent = 'Logging in...';
-                loginMessage.className = 'form-message';
-
-                const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
-
-                // IMPORTANT: FastAPI's OAuth2PasswordRequestForm expects form data, not JSON.
-                const formData = new URLSearchParams();
-                formData.append('username', email);
-                formData.append('password', password);
-
-                try {
-                    const response = await fetch(`${API_BASE_URL}/api/auth/token`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: formData.toString()
-                    });
-                    
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.detail || 'Failed to log in.');
-                    }
-
-                    console.log('Access Token:', data.access_token);
-                    loginMessage.textContent = 'Login successful!';
-                    loginMessage.classList.add('success');
-                    // In a real app, you would save the token and redirect.
-                    setTimeout(hideModal, 1500);
-
-                } catch (error) {
-                    loginMessage.textContent = 'Incorrect email or password.';
-                    loginMessage.classList.add('error');
-                }
-            });
+            // Initial reveal for elements in viewport
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         });
     </script>
 </body>
