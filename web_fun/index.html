@@ -246,14 +246,6 @@
         </section>
     </div>
 
-    <footer class="main-footer">
-        <div class="container">
-            <p class="agniro-brand">An Agniro Venture</p>
-            <div class="footer-links"><a href="#">Terms & Conditions</a><a href="#">Privacy Policy</a><a href="#">License Terms</a></div>
-            <p class="footer-copyright">&copy; 2025 Aesthetica. All Rights Reserved.</p>
-        </div>
-    </footer>
-    
     <div class="auth-modal-overlay" id="auth-modal-overlay">
         <div class="auth-modal">
             <button class="auth-modal-close" id="auth-modal-close">&times;</button>
@@ -281,8 +273,15 @@
         </div>
     </div>
 
+    <footer class="main-footer">
+        <div class="container">
+            <p class="agniro-brand">An Agniro Venture</p>
+            <div class="footer-links"><a href="#">Terms & Conditions</a><a href="#">Privacy Policy</a><a href="#">License Terms</a></div>
+            <p class="footer-copyright">&copy; 2025 Aesthetica. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
     <script>
-        // JS is mostly unchanged, auth logic is self-contained.
         const API_BASE_URL = 'https://aesthetico-web-store.onrender.com';
         
         document.addEventListener('DOMContentLoaded', () => {
@@ -431,21 +430,73 @@
             const registerFormElement = document.getElementById('register-form-element');
             const showRegisterButton = document.getElementById('show-register-button');
             const showLoginButton = document.getElementById('show-login-button');
-
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            
             const showModal = () => authModalOverlay.classList.add('visible');
             const hideModal = () => authModalOverlay.classList.remove('visible');
             
             accountButton.addEventListener('click', showModal);
             closeModalButton.addEventListener('click', hideModal);
             authModalOverlay.addEventListener('click', (e) => { if (e.target === authModalOverlay) hideModal(); });
-            showRegisterButton.addEventListener('click', () => { document.getElementById('login-form').style.display = 'none'; document.getElementById('register-form').style.display = 'block'; });
-            showLoginButton.addEventListener('click', () => { document.getElementById('register-form').style.display = 'none'; document.getElementById('login-form').style.display = 'block'; });
+            showRegisterButton.addEventListener('click', () => { loginForm.style.display = 'none'; registerForm.style.display = 'block'; });
+            showLoginButton.addEventListener('click', () => { registerForm.style.display = 'none'; loginForm.style.display = 'block'; });
             
             loginFormElement.addEventListener('submit', async (e) => {
-                // Login logic from previous version...
+                e.preventDefault();
+                const loginMessage = document.getElementById('login-message');
+                loginMessage.textContent = 'Logging in...';
+                loginMessage.className = 'form-message';
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                const formData = new URLSearchParams();
+                formData.append('username', email);
+                formData.append('password', password);
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/auth/token`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: formData.toString()
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to log in.');
+                    const accountIconWrapper = document.getElementById('account-icon-wrapper');
+                    const user = data.user;
+                    if (user && user.full_name) {
+                        const initials = user.full_name.split(' ').map(n => n[0]).join('').toUpperCase();
+                        accountIconWrapper.innerHTML = `<div class="user-avatar">${initials}</div>`;
+                    }
+                    loginMessage.textContent = 'Login successful!';
+                    loginMessage.classList.add('success');
+                    setTimeout(hideModal, 1500);
+                } catch(error) {
+                    loginMessage.textContent = 'Incorrect email or password.';
+                    loginMessage.classList.add('error');
+                }
             });
             registerFormElement.addEventListener('submit', async (e) => {
-                // Register logic from previous version...
+                e.preventDefault();
+                const registerMessage = document.getElementById('register-message');
+                registerMessage.textContent = 'Creating account...';
+                registerMessage.className = 'form-message';
+                const name = document.getElementById('register-name').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ full_name: name, email, password })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || 'Failed to register.');
+                    registerMessage.textContent = 'Account created! Please log in.';
+                    registerMessage.classList.add('success');
+                    setTimeout(() => { showLoginButton.click(); }, 2000);
+                } catch (error) {
+                    registerMessage.textContent = error.message;
+                    registerMessage.classList.add('error');
+                }
             });
 
             loadCart();
