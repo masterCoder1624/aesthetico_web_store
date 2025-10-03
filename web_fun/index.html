@@ -32,26 +32,30 @@
 
         .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        .view-container > .page-view {
+            transition: opacity 0.4s ease-in-out;
+        }
 
         .main-header { background-color: rgba(17, 17, 17, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--border-color); }
         .main-nav { display: flex; justify-content: space-between; align-items: center; padding-top: 1.25rem; padding-bottom: 1.25rem; }
-        .logo { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; cursor: pointer; }
-        .logo-subtitle { font-size: 0.8rem; color: #a0a0a0; font-family: var(--font-sans); font-weight: 300; margin-left: 0.5rem; }
+        .logo { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; cursor: pointer; }
         .nav-links { display: none; }
-        .nav-links a { color: #a0a0a0; transition: color 0.2s ease; position: relative; padding-bottom: 4px; cursor: pointer; }
+        .nav-links a { color: #a0a0a0; transition: color 0.2s ease; position: relative; padding-bottom: 4px; cursor: pointer; font-weight: 500; }
         .nav-links a:hover { color: white; }
-        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background-color: var(--primary-accent-color); transition: width 0.3s ease; }
-        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: white; }
+        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--primary-accent-color); }
+        
         .nav-actions { display: flex; align-items: center; }
-        .nav-actions button, .nav-actions .cart-button { margin-left: 1.25rem; color: #a0a0a0; transition: color 0.2s ease; }
-        .nav-actions button:hover, .nav-actions .cart-button:hover { color: white; }
+        .nav-actions button { margin-left: 1.25rem; color: #a0a0a0; transition: color 0.2s ease; }
+        .nav-actions button:hover { color: white; }
         .nav-actions svg { width: 1.5rem; height: 1.5rem; }
         .cart-button { position: relative; }
         .cart-badge { position: absolute; top: -0.5rem; right: -0.5rem; background-color: var(--primary-accent-color); color: var(--bg-color); font-weight: 600; font-size: 0.75rem; width: 1.25rem; height: 1.25rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; transform: scale(0); transition: transform 0.2s ease; }
         .cart-badge.visible { transform: scale(1); }
         .user-avatar { width: 2.25rem; height: 2.25rem; background-color: var(--primary-accent-color); color: var(--bg-color); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; }
 
-        .page-view { padding-top: 4rem; padding-bottom: 6rem; }
+        .page-view { padding-top: 6rem; padding-bottom: 6rem; }
         .page-header { text-align: center; margin-bottom: 4rem; }
         .page-header h1 { font-family: var(--font-serif); font-size: 3rem; margin-bottom: 0.5rem; }
         .page-header p { color: #a0a0a0; max-width: 600px; margin: 0 auto; }
@@ -84,38 +88,45 @@
         .back-button { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; color: #a0a0a0; transition: color 0.2s ease; }
         .back-button:hover { color: white; }
 
-        /* --- NEW: Cart Page Styles --- */
         .cart-items-list { display: flex; flex-direction: column; gap: 1.5rem; }
-        .cart-item { display: flex; gap: 1.5rem; background-color: var(--secondary-bg-color); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid var(--border-color); }
-        .cart-item-img { width: 100px; height: 120px; object-fit: cover; border-radius: 0.5rem; }
+        .cart-item { display: flex; gap: 1.5rem; align-items: center; background-color: var(--secondary-bg-color); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-color); }
+        .cart-item-img { width: 80px; height: 100px; object-fit: cover; border-radius: 0.5rem; }
         .cart-item-info { flex-grow: 1; }
         .cart-item-title { font-size: 1.1rem; font-weight: 600; }
-        .cart-item-price { color: #a0a0a0; }
-        .cart-item-actions { display: flex; align-items: center; margin-top: 1rem; gap: 1rem; }
-        .cart-item-remove-btn { color: #a0a0a0; font-size: 0.8rem; text-decoration: underline; }
+        .cart-item-price { color: #a0a0a0; font-size: 0.9rem; }
+        .cart-item-remove-btn { color: #a0a0a0; font-size: 0.8rem; text-decoration: underline; margin-left: auto; }
         .cart-summary { margin-top: 3rem; background-color: var(--secondary-bg-color); padding: 2rem; border-radius: 0.75rem; border: 1px solid var(--border-color); }
         .cart-summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 1.1rem; }
         .cart-summary-total { font-weight: 700; font-size: 1.25rem; border-top: 1px solid var(--border-color); padding-top: 1rem; }
         .empty-cart { text-align: center; padding: 4rem 0; color: #a0a0a0; }
         
-        /* --- NEW: Customized/About Page Styles --- */
-        .content-box { background-color: var(--secondary-bg-color); padding: 2rem; border-radius: 0.75rem; max-width: 800px; margin: 0 auto; line-height: 1.8; }
-        .content-box p { margin-bottom: 1rem; color: #a0a0a0; }
+        /* --- REDESIGNED: Customized Page --- */
+        .custom-form-container { display: grid; grid-template-columns: 1fr; gap: 3rem; background-color: var(--secondary-bg-color); padding: 2.5rem; border-radius: 1rem; }
+        .custom-form-info h3 { font-family: var(--font-serif); font-size: 1.75rem; margin-bottom: 1rem; }
+        .custom-form-info p { color: #a0a0a0; margin-bottom: 1rem; }
+        .form-input, textarea.form-input { background-color: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 0.5rem; padding: 0.75rem 1rem; font-size: 1rem; transition: border-color 0.2s ease, box-shadow 0.2s ease; width: 100%; font-family: var(--font-sans); }
+        .form-input:focus, textarea.form-input:focus { outline: none; border-color: var(--primary-accent-color); box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
         .custom-form { display: flex; flex-direction: column; gap: 1.5rem; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.875rem; color: #a0a0a0; margin-bottom: 0.5rem; font-weight: 500; }
         .file-input-wrapper { border: 2px dashed var(--border-color); border-radius: 0.5rem; padding: 2rem; text-align: center; cursor: pointer; transition: border-color 0.2s ease; }
         .file-input-wrapper:hover { border-color: var(--primary-accent-color); }
+        .file-input-wrapper svg { width: 2.5rem; height: 2.5rem; color: #666; margin: 0 auto 1rem auto; }
         .file-input-wrapper span { color: #a0a0a0; }
         #file-upload { display: none; }
         #file-upload-filename { margin-top: 1rem; font-size: 0.9rem; color: var(--success-color); }
 
-        .auth-modal-overlay, .auth-modal, .main-footer { /* Unchanged */ }
+        .auth-modal-overlay, .main-footer { /* Unchanged */ }
+
+        .agniro-brand { font-family: var(--font-serif); letter-spacing: 1px; color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
 
         @media (min-width: 768px) {
-            .nav-links { display: flex; align-items: center; gap: 2rem; }
+            .nav-links { display: flex; align-items: center; gap: 2.5rem; }
             .hero-section h1 { font-size: 5rem; }
             #product-grid, #catalog-grid { grid-template-columns: repeat(2, 1fr); }
             .product-card:nth-child(2n) { margin-top: 3rem; }
             .product-detail-content { grid-template-columns: repeat(2, 1fr); gap: 4rem; }
+            .custom-form-container { grid-template-columns: 1fr 1.25fr; align-items: center; padding: 3rem; }
         }
         @media (min-width: 1024px) {
             #product-grid, #catalog-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
@@ -126,9 +137,7 @@
 
     <header class="main-header">
         <nav class="main-nav container">
-            <div class="logo" id="logo-button">
-                Aesthetica <span class="logo-subtitle">by Agniro</span>
-            </div>
+            <div class="logo" id="logo-button">Aesthetica</div>
             <div class="nav-links">
                 <a id="nav-catalog">Catalog</a>
                 <a id="nav-customized">Customized</a>
@@ -182,15 +191,21 @@
         <section id="customized-view" class="page-view hidden">
             <div class="container">
                  <div class="page-header"><h1 class="reveal">Custom Designs</h1><p class="reveal">Have a unique idea? We can print your custom designs on our high-quality notebooks. Fill out the form below to start the process.</p></div>
-                 <div class="content-box">
+                 <div class="custom-form-container">
+                    <div class="custom-form-info">
+                        <h3>Let's Create Together</h3>
+                        <p>Tell us about your vision. Our team will review your request and get back to you within 48 hours to discuss the details and provide a quote.</p>
+                        <p>Whether it's a company logo, a personal monogram, or a piece of artwork, we're excited to help bring your unique design to life.</p>
+                    </div>
                     <form id="custom-form" class="custom-form">
                          <div class="form-group"><label for="custom-name">Full Name</label><input type="text" id="custom-name" class="form-input" required></div>
                          <div class="form-group"><label for="custom-email">Email Address</label><input type="email" id="custom-email" class="form-input" required></div>
                          <div class="form-group"><label for="custom-description">Design Idea</label><textarea id="custom-description" class="form-input" rows="4" required placeholder="Describe your design, including colors, themes, text, etc."></textarea></div>
                          <div class="form-group">
-                             <label>Upload Your Design File</label>
+                             <label>Upload Your Design File (Optional)</label>
                              <label for="file-upload" class="file-input-wrapper">
-                                <span id="file-upload-text">Click here to choose a file (PNG, JPG, PDF)</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l-3 3m3-3l3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" /></svg>
+                                <span id="file-upload-text">Click to upload a file (PNG, JPG, PDF)</span>
                                 <span id="file-upload-filename"></span>
                             </label>
                              <input type="file" id="file-upload" accept=".png,.jpg,.jpeg,.pdf">
@@ -203,23 +218,53 @@
 
         <section id="about-view" class="page-view hidden">
             <div class="container">
-                <div class="page-header"><h1 class="reveal">About Agniro & Aesthetica</h1></div>
+                <div class="page-header"><h1 class="reveal">About Aesthetica</h1></div>
                 <div class="content-box">
                     <h2>Our Story</h2>
-                    <p>Aesthetica is the first creative venture from Agniro, born from a passion for art, design, and the timeless act of putting pen to paper. At Agniro, we believe in building tools that inspire creativity and mindfulness.</p>
-                    <p>Our mission with Aesthetica is to provide artists, writers, and dreamers with beautiful, high-quality journals and digital assets that are not just functional, but a joy to use. Every design is crafted with care, and every product is made to be a companion on your creative journey.</p>
+                    <p>Aesthetica was born from a passion for art, design, and the timeless act of putting pen to paper. We believe that the tools you use should be as inspiring as the ideas they hold.</p>
+                    <p>Our mission is to provide artists, writers, and dreamers with beautiful, high-quality journals and digital assets that are not just functional, but a joy to use. Every design is crafted with care, and every product is made to be a companion on your creative journey.</p>
                 </div>
             </div>
         </section>
     </div>
 
     <footer class="main-footer">
-        <div class="container"><p class="logo">Aesthetica</p><div class="footer-links"><a href="#">Terms & Conditions</a><a href="#">Privacy Policy</a><a href="#">License Terms</a></div><p class="footer-copyright">&copy; 2025 Aesthetica, a product by Agniro.</p></div>
+        <div class="container">
+            <p class="agniro-brand">An Agniro Venture</p>
+            <div class="footer-links"><a href="#">Terms & Conditions</a><a href="#">Privacy Policy</a><a href="#">License Terms</a></div>
+            <p class="footer-copyright">&copy; 2025 Aesthetica. All Rights Reserved.</p>
+        </div>
     </footer>
     
-    <div class="auth-modal-overlay" id="auth-modal-overlay"> <!-- Unchanged --> </div>
+    <div class="auth-modal-overlay" id="auth-modal-overlay"> <!-- Unchanged but required for functionality -->
+        <div class="auth-modal">
+            <button class="auth-modal-close" id="auth-modal-close">&times;</button>
+            <div id="login-form">
+                 <div class="auth-modal-header"><h2>Welcome Back</h2><p>Log in to access your account.</p></div>
+                <form class="auth-form" id="login-form-element">
+                    <div class="form-group"><label for="login-email">Email Address</label><input type="email" id="login-email" class="form-input" required></div>
+                    <div class="form-group"><label for="login-password">Password</label><input type="password" id="login-password" class="form-input" required></div>
+                    <div class="form-message" id="login-message"></div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                 <div class="auth-toggle"><span>Don't have an account?</span><button id="show-register-button">Sign Up</button></div>
+            </div>
+            <div id="register-form">
+                 <div class="auth-modal-header"><h2>Create Account</h2><p>Join our community of creators.</p></div>
+                <form class="auth-form" id="register-form-element">
+                    <div class="form-group"><label for="register-name">Full Name</label><input type="text" id="register-name" class="form-input" required></div>
+                    <div class="form-group"><label for="register-email">Email Address</label><input type="email" id="register-email" class="form-input" required></div>
+                    <div class="form-group"><label for="register-password">Password</label><input type="password" id="register-password" class="form-input" required minlength="6"></div>
+                    <div class="form-message" id="register-message"></div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </form>
+                 <div class="auth-toggle"><span>Already have an account?</span><button id="show-login-button">Login</button></div>
+            </div>
+        </div>
+    </div>
 
     <script>
+        // The JavaScript is largely the same, with updates to navigation and form handling.
         const API_BASE_URL = 'https://aesthetico-web-store.onrender.com';
         
         document.addEventListener('DOMContentLoaded', () => {
@@ -230,16 +275,26 @@
                 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
             }, { threshold: 0.1 });
             
-            // --- View Management ---
+            const navLinks = document.querySelectorAll('.nav-links a');
+
+            const updateActiveNav = (viewId) => {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', `nav-${viewId.replace('-view', '')}` === link.id);
+                });
+            };
+
             const views = document.querySelectorAll('.page-view');
             const showView = (viewId) => {
                 views.forEach(view => view.classList.add('hidden'));
-                document.getElementById(viewId)?.classList.remove('hidden');
-                window.scrollTo(0, 0);
-                document.querySelectorAll(`#${viewId} .reveal`).forEach(el => observer.observe(el));
+                const currentView = document.getElementById(viewId);
+                if (currentView) {
+                    currentView.classList.remove('hidden');
+                    window.scrollTo(0, 0);
+                    currentView.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+                    updateActiveNav(viewId);
+                }
             };
 
-            // --- Cart Logic ---
             const updateCartBadge = () => {
                 const count = cart.reduce((sum, item) => sum + item.quantity, 0);
                 cartBadge.textContent = count;
@@ -260,7 +315,6 @@
                 if (savedCart) { cart = JSON.parse(savedCart); updateCartBadge(); }
             };
 
-            // --- Render Functions ---
             const renderProductCard = (product) => {
                 const card = document.createElement('div');
                 card.className = 'product-card reveal';
@@ -281,20 +335,7 @@
                 const itemsHtml = cart.map(item => {
                     const product = allProducts.find(p => p.id === item.id);
                     if (!product) return '';
-                    return `
-                        <div class="cart-item">
-                            <img src="${product.image_url}" alt="${product.title}" class="cart-item-img">
-                            <div class="cart-item-info">
-                                <p class="cart-item-title">${product.title}</p>
-                                <p class="cart-item-price">₹${product.price_inr}</p>
-                                <div class="cart-item-actions">
-                                    <span>Quantity: ${item.quantity}</span>
-                                    <button class="cart-item-remove-btn" data-product-id="${product.id}">Remove</button>
-                                </div>
-                            </div>
-                            <p class="cart-item-total">₹${product.price_inr * item.quantity}</p>
-                        </div>
-                    `;
+                    return `<div class="cart-item"><img src="${product.image_url}" alt="${product.title}" class="cart-item-img"><div class="cart-item-info"><p class="cart-item-title">${product.title}</p><p class="cart-item-price">Quantity: ${item.quantity}</p></div><div class="cart-item-price" style="margin-left:auto;">₹${product.price_inr * item.quantity}</div><button class="cart-item-remove-btn" data-product-id="${product.id}" style="margin-left: 1.5rem;">&times;</button></div>`;
                 }).join('');
 
                 const subtotal = cart.reduce((sum, item) => {
@@ -302,15 +343,7 @@
                     return sum + (product ? product.price_inr * item.quantity : 0);
                 }, 0);
 
-                cartContent.innerHTML = `
-                    <div class="cart-items-list">${itemsHtml}</div>
-                    <div class="cart-summary">
-                        <div class="cart-summary-row"><span>Subtotal</span><span>₹${subtotal}</span></div>
-                        <div class="cart-summary-row cart-summary-total"><span>Total</span><span>₹${subtotal}</span></div>
-                        <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Proceed to Checkout</button>
-                    </div>
-                `;
-
+                cartContent.innerHTML = `<div class="cart-items-list">${itemsHtml}</div><div class="cart-summary"><div class="cart-summary-row"><span>Subtotal</span><span>₹${subtotal}</span></div><div class="cart-summary-row cart-summary-total"><span>Total</span><span>₹${subtotal}</span></div><button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Proceed to Checkout</button></div>`;
                 document.querySelectorAll('.cart-item-remove-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => removeFromCart(e.target.dataset.productId));
                 });
@@ -334,7 +367,6 @@
                 } catch (error) { contentEl.innerHTML = `<p style="text-align:center; padding: 4rem 0; color: var(--error-color);">${error.message}</p>`; }
             }
             
-            // --- Initial Data Load ---
             (async function fetchInitialData() {
                 const productGrid = document.getElementById('product-grid');
                 const catalogGrid = document.getElementById('catalog-grid');
@@ -344,11 +376,12 @@
                      allProducts = await response.json();
                      productGrid.innerHTML = '';
                      catalogGrid.innerHTML = '';
-                     allProducts.forEach(product => {
-                        productGrid.appendChild(renderProductCard(product));
-                        catalogGrid.appendChild(renderProductCard(product));
-                    });
-                    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+                     // Display first 3 products on home page
+                     allProducts.slice(0, 3).forEach(product => productGrid.appendChild(renderProductCard(product)));
+                     // Display all products on catalog page
+                     allProducts.forEach(product => catalogGrid.appendChild(renderProductCard(product)));
+                     
+                     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
                 } catch(error) { /* error handling */ }
             })();
 
@@ -357,15 +390,10 @@
             document.getElementById('nav-catalog').addEventListener('click', () => showView('catalog-view'));
             document.getElementById('nav-customized').addEventListener('click', () => showView('customized-view'));
             document.getElementById('nav-about').addEventListener('click', () => showView('about-view'));
-            document.getElementById('cart-button').addEventListener('click', () => {
-                renderCartPage();
-                showView('cart-view');
-            });
-            document.querySelectorAll('.back-button').forEach(btn => {
-                btn.addEventListener('click', () => showView(btn.dataset.targetView));
-            });
+            document.getElementById('cart-button').addEventListener('click', () => { renderCartPage(); showView('cart-view'); });
+            document.querySelectorAll('.back-button').forEach(btn => btn.addEventListener('click', () => showView(btn.dataset.targetView)));
 
-            // --- Customized Form Logic ---
+            // --- Form Logic ---
             const fileUpload = document.getElementById('file-upload');
             const fileUploadText = document.getElementById('file-upload-text');
             const fileUploadFilename = document.getElementById('file-upload-filename');
@@ -383,8 +411,9 @@
                 fileUploadFilename.textContent = '';
             });
 
-            // All Modal and Auth logic remains the same
+            // Auth Logic (unchanged from previous version)
             loadCart();
+            showView('home-view'); // Start on home view
         });
     </script>
 </body>
