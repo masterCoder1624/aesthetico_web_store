@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aesthetica | Modern & Artistic Journals</title>
+    <title>Aesthetica by Agniro | Modern & Artistic Journals</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS is mostly unchanged, with additions for the detail view and user avatar */
+        /* CSS is unchanged */
         :root {
             --bg-color: #111111;
             --text-color: #f0f0f0;
@@ -47,9 +47,9 @@
         .nav-actions button:hover, .nav-actions .cart-button:hover { color: white; }
         .nav-actions svg { width: 1.5rem; height: 1.5rem; }
         .cart-button { position: relative; }
-        .cart-badge { position: absolute; top: -0.5rem; right: -0.5rem; background-color: var(--primary-accent-color); color: var(--bg-color); font-weight: 600; font-size: 0.75rem; width: 1.25rem; height: 1.25rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; }
+        .cart-badge { position: absolute; top: -0.5rem; right: -0.5rem; background-color: var(--primary-accent-color); color: var(--bg-color); font-weight: 600; font-size: 0.75rem; width: 1.25rem; height: 1.25rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; transform: scale(0); transition: transform 0.2s ease; }
+        .cart-badge.visible { transform: scale(1); }
         
-        /* NEW: User Avatar Style */
         .user-avatar { width: 2.25rem; height: 2.25rem; background-color: var(--primary-accent-color); color: var(--bg-color); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; }
 
         .hero-section { padding-top: 6rem; padding-bottom: 6rem; position: relative; overflow: hidden; }
@@ -57,8 +57,9 @@
         .hero-section p { font-size: 1.125rem; color: #a0a0a0; margin-bottom: 2.5rem; max-width: 36rem; }
         
         .btn { display: inline-block; font-weight: 600; padding: 0.8rem 2.25rem; border-radius: 9999px; transition: all 0.2s ease-in-out; border: 2px solid transparent; font-size: 1rem; text-align: center;}
+        .btn[disabled] { opacity: 0.7; cursor: not-allowed; }
         .btn-primary { background-color: var(--primary-accent-color); color: var(--bg-color); }
-        .btn-primary:hover { background-color: #ffb53b; transform: scale(1.05); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
+        .btn-primary:hover:not([disabled]) { background-color: #ffb53b; transform: scale(1.05); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
         
         .products-section { background-color: var(--secondary-bg-color); padding-top: 6rem; padding-bottom: 6rem; position: relative; }
         .products-section h2 { font-family: var(--font-serif); font-size: 2.75rem; font-weight: 700; text-align: center; margin-bottom: 4rem; }
@@ -71,7 +72,6 @@
         .product-card-info h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
         .product-card-info p { color: var(--primary-accent-color); font-size: 1.1rem; font-weight: 600; }
 
-        /* --- NEW: Product Detail View Styles --- */
         #product-detail-view { padding-top: 4rem; padding-bottom: 6rem; }
         .product-detail-content { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: start; }
         .product-detail-image-wrapper { border-radius: 1rem; overflow: hidden; border: 1px solid var(--border-color); }
@@ -139,7 +139,6 @@
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
                 </button>
                 <button title="My Account" id="account-button">
-                    <!-- This content will be replaced by JS on login -->
                     <div id="account-icon-wrapper">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                     </div>
@@ -170,7 +169,6 @@
         </section>
     </main>
 
-    <!-- NEW: Product Detail View (initially hidden) -->
     <section id="product-detail-view" class="hidden">
         <div class="container">
              <button class="back-to-catalog" id="back-to-catalog-button">
@@ -191,15 +189,14 @@
                 <a href="#">Privacy Policy</a>
                 <a href="#">License Terms</a>
             </div>
-            <p class="footer-copyright">&copy; 2025 Aesthetica. All Rights Reserved.</p>
+            <p class="footer-copyright">&copy; 2025 Aesthetica, a product by Agniro.</p>
         </div>
     </footer>
     
     <div class="auth-modal-overlay" id="auth-modal-overlay">
+        <!-- Auth Modal HTML is unchanged -->
         <div class="auth-modal">
             <button class="auth-modal-close" id="auth-modal-close">&times;</button>
-            
-            <!-- Login Form -->
             <div id="login-form">
                  <div class="auth-modal-header"><h2>Welcome Back</h2><p>Log in to access your account.</p></div>
                 <form class="auth-form" id="login-form-element">
@@ -210,8 +207,6 @@
                 </form>
                  <div class="auth-toggle"><span>Don't have an account?</span><button id="show-register-button">Sign Up</button></div>
             </div>
-
-            <!-- Registration Form -->
             <div id="register-form">
                  <div class="auth-modal-header"><h2>Create Account</h2><p>Join our community of creators.</p></div>
                 <form class="auth-form" id="register-form-element">
@@ -230,62 +225,92 @@
         const API_BASE_URL = 'https://aesthetico-web-store.onrender.com';
         
         document.addEventListener('DOMContentLoaded', () => {
+            // --- NEW: Cart Logic ---
+            let cart = [];
+            const cartBadge = document.querySelector('.cart-badge');
+
+            const updateCartBadge = () => {
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartBadge.textContent = count;
+                if (count > 0) {
+                    cartBadge.classList.add('visible');
+                } else {
+                    cartBadge.classList.remove('visible');
+                }
+            };
+
+            const saveCart = () => {
+                localStorage.setItem('aestheticaCart', JSON.stringify(cart));
+            };
+
+            const addToCart = (productId) => {
+                const existingItem = cart.find(item => item.id === productId);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ id: productId, quantity: 1 });
+                }
+                saveCart();
+                updateCartBadge();
+            };
+            
+            const loadCart = () => {
+                const savedCart = localStorage.getItem('aestheticaCart');
+                if (savedCart) {
+                    cart = JSON.parse(savedCart);
+                    updateCartBadge();
+                }
+            };
+            
+            // --- Page Navigation Logic ---
             const mainContent = document.getElementById('main-content');
             const productDetailView = document.getElementById('product-detail-view');
             const productDetailContent = document.getElementById('product-detail-content');
             const backToCatalogButton = document.getElementById('back-to-catalog-button');
 
-            // Function to show main view and hide detail view
-            const showMainView = () => {
-                mainContent.classList.remove('hidden');
-                productDetailView.classList.add('hidden');
-            };
-            
-            // Function to show detail view and hide main view
-            const showDetailView = () => {
-                mainContent.classList.add('hidden');
-                productDetailView.classList.remove('hidden');
-                window.scrollTo(0, 0); // Scroll to top
-            };
-
-            // Initialize back button
+            const showMainView = () => { mainContent.classList.remove('hidden'); productDetailView.classList.add('hidden'); };
+            const showDetailView = () => { mainContent.classList.add('hidden'); productDetailView.classList.remove('hidden'); window.scrollTo(0, 0); };
             backToCatalogButton.addEventListener('click', showMainView);
 
             // Fetch and display a single product
             async function fetchAndDisplayProductDetail(productId) {
                 productDetailContent.innerHTML = `<p style="text-align:center; padding: 4rem 0;">Loading product details...</p>`;
                 showDetailView();
-                
                 try {
                     const response = await fetch(`${API_BASE_URL}/api/products/${productId}`);
                     if (!response.ok) throw new Error('Product not found.');
                     const product = await response.json();
-                    
                     productDetailContent.innerHTML = `
-                        <div class="product-detail-image-wrapper reveal visible">
-                            <img src="${product.image_url}" alt="${product.title}">
-                        </div>
+                        <div class="product-detail-image-wrapper reveal visible"><img src="${product.image_url}" alt="${product.title}"></div>
                         <div class="product-detail-info reveal visible">
-                            <h1>${product.title}</h1>
-                            <p class="price">₹${product.price_inr}</p>
+                            <h1>${product.title}</h1><p class="price">₹${product.price_inr}</p>
                             <p class="description">${product.long_description}</p>
-                            <button class="btn btn-primary" style="width:100%;">Add to Cart</button>
+                            <button class="btn btn-primary add-to-cart-btn" data-product-id="${product.id}" style="width:100%;">Add to Cart</button>
                         </div>
                     `;
+                    // Add event listener for the new "Add to Cart" button
+                    const addToCartButton = productDetailContent.querySelector('.add-to-cart-btn');
+                    addToCartButton.addEventListener('click', () => {
+                        addToCart(product.id);
+                        addToCartButton.textContent = 'Added!';
+                        addToCartButton.disabled = true;
+                        setTimeout(() => {
+                            addToCartButton.textContent = 'Add to Cart';
+                            addToCartButton.disabled = false;
+                        }, 2000);
+                    });
                 } catch (error) {
                     productDetailContent.innerHTML = `<p style="text-align:center; padding: 4rem 0; color: var(--error-color);">${error.message}</p>`;
                 }
             }
             
-            // Initialize scroll reveal observer
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('visible');
-                });
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
             }, { threshold: 0.1 });
 
-            // Fetch all products and set up click listeners
+            // Fetch all products
             (async function fetchAndDisplayProducts() {
+                // ... same as before ...
                 const productGrid = document.getElementById('product-grid');
                 try {
                      const response = await fetch(`${API_BASE_URL}/api/products`);
@@ -303,15 +328,15 @@
                         card.addEventListener('click', () => fetchAndDisplayProductDetail(product.id));
                         productGrid.appendChild(card);
                     });
-                    const newRevealElements = productGrid.querySelectorAll('.reveal');
-                    newRevealElements.forEach(el => observer.observe(el));
+                    productGrid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
                 } catch(error) {
                     console.error("Failed to fetch products:", error);
                     productGrid.innerHTML = '<p style="text-align:center; padding: 4rem 0; color: var(--error-color);">Could not load products. Please try again later.</p>';
                 }
             })();
 
-            // All Modal and Auth logic
+            // All Modal and Auth logic remains the same
+            // ... (code for opening/closing/toggling modal, login, registration) ...
             const accountButton = document.getElementById('account-button');
             const authModalOverlay = document.getElementById('auth-modal-overlay');
             const closeModalButton = document.getElementById('auth-modal-close');
@@ -330,8 +355,6 @@
             authModalOverlay.addEventListener('click', (e) => { if (e.target === authModalOverlay) hideModal(); });
             showRegisterButton.addEventListener('click', () => { loginForm.style.display = 'none'; registerForm.style.display = 'block'; });
             showLoginButton.addEventListener('click', () => { registerForm.style.display = 'none'; loginForm.style.display = 'block'; });
-
-            // Login Form Submission
             loginFormElement.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const loginMessage = document.getElementById('login-message');
@@ -367,8 +390,6 @@
                     loginMessage.classList.add('error');
                 }
             });
-
-            // Registration Form Submission
             registerFormElement.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const registerMessage = document.getElementById('register-message');
@@ -389,15 +410,16 @@
                     
                     registerMessage.textContent = 'Account created! Please log in.';
                     registerMessage.classList.add('success');
-                    setTimeout(() => { showRegisterButton.click(); }, 2000);
+                    setTimeout(() => { showLoginButton.click(); }, 2000);
 
                 } catch (error) {
                     registerMessage.textContent = error.message;
                     registerMessage.classList.add('error');
                 }
             });
-
-            // Initial reveal for elements in viewport
+            
+            // --- Initial Load ---
+            loadCart();
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         });
     </script>
