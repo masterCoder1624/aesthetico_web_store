@@ -9,14 +9,12 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 # --- Security & JWT Configuration ---
 SECRET_KEY = "a_very_secret_key_that_should_be_in_an_env_file"
-ALGORITHM = "HS256"
+ALGORITHM = "HS265"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
 
-# --- In-Memory Databases (No real DB for now) ---
+# --- In-Memory Databases ---
 fake_users_db = {}
-
-# UPDATED: Added long_description for the detail page
 fake_products_db = [
     {
         "id": "prod_1",
@@ -41,13 +39,13 @@ fake_products_db = [
     }
 ]
 
-# --- Pydantic Models (Data Shapes) ---
+# --- Pydantic Models ---
 class Product(BaseModel):
     id: str
     title: str
     price_inr: int
     image_url: str
-    long_description: str # Added this field
+    long_description: str
 
 class UserCreate(BaseModel):
     full_name: str
@@ -61,6 +59,7 @@ class TokenData(BaseModel):
 app = FastAPI()
 
 # --- CORS Middleware ---
+# This section is updated to be more explicit for better compatibility.
 origins = [
     "null",
     "http://localhost",
@@ -71,8 +70,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"], # Explicitly allow OPTIONS
+    allow_headers=["*"], # Allow all headers
 )
 
 # --- Helper Functions ---
@@ -90,15 +89,12 @@ def read_root():
 def get_products():
     return fake_products_db
 
-# --- NEW: Endpoint to get a single product by its ID ---
 @app.get("/api/products/{product_id}", response_model=Product)
 def get_product_by_id(product_id: str):
     for product in fake_products_db:
         if product["id"] == product_id:
             return product
-    # If the loop finishes without finding the product, raise an error
     raise HTTPException(status_code=404, detail="Product not found")
-
 
 @app.post("/api/auth/register")
 def register_user(user: UserCreate):
