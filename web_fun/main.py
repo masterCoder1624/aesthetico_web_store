@@ -15,6 +15,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
 
 # --- In-Memory Databases ---
 fake_users_db = {}
+
+# UPDATED: Added 6 new products for a total of 9
 fake_products_db = [
     {
         "id": "prod_1",
@@ -36,6 +38,48 @@ fake_products_db = [
         "price_inr": 199,
         "image_url": "https://placehold.co/600x800/fecaca/991b1b?text=Floral+Dreams",
         "long_description": "Bring your journal to life with these printable pages adorned with delicate floral patterns. This digital download includes 5 unique A4 designs that you can print as many times as you like. Perfect for bullet journaling and daily planning."
+    },
+    {
+        "id": "prod_4",
+        "title": "Celestial Dreams Journal",
+        "price_inr": 299,
+        "image_url": "https://placehold.co/600x800/1e293b/94a3b8?text=Celestial+Dreams",
+        "long_description": "Capture the magic of the night sky with this elegant journal. Featuring a deep navy cover with gold foil constellations, it's the perfect companion for stargazers and dreamers alike. Contains 180 dotted pages."
+    },
+    {
+        "id": "prod_5",
+        "title": "Minimalist Grid Notebook",
+        "price_inr": 189,
+        "image_url": "https://placehold.co/600x800/e5e7eb/4b5563?text=Minimalist+Grid",
+        "long_description": "For the organized mind, this minimalist notebook features a clean grid layout on every page. Its simple, functional design makes it ideal for note-taking, architectural sketches, or habit tracking. Available in A5 size."
+    },
+    {
+        "id": "prod_6",
+        "title": "Forest Wanderer's Log",
+        "price_inr": 229,
+        "image_url": "https://placehold.co/600x800/d4d4d8/18181b?text=Forest+Log",
+        "long_description": "A rustic, durable notebook designed for adventurers. The cover features an embossed pine tree, and its water-resistant pages are perfect for jotting down notes and observations on your travels through nature."
+    },
+    {
+        "id": "prod_7",
+        "title": "Ocean Depths Diary",
+        "price_inr": 219,
+        "image_url": "https://placehold.co/600x800/bae6fd/0c4a6e?text=Ocean+Depths",
+        "long_description": "Dive into your thoughts with the Ocean Depths Diary. Its cover showcases a mesmerizing watercolor design of marine life. Contains lined pages made from recycled materials, perfect for the eco-conscious writer."
+    },
+    {
+        "id": "prod_8",
+        "title": "Abstract Geometry Pack",
+        "price_inr": 279,
+        "image_url": "https://placehold.co/600x800/fde68a/b45309?text=Abstract+Geo",
+        "long_description": "A vibrant collection of 12 digital papers featuring bold, abstract geometric patterns. Perfect for adding a modern touch to your digital planners, presentations, or creative projects. High-resolution JPG files included."
+    },
+    {
+        "id": "prod_9",
+        "title": "Gilded Age Pages",
+        "price_inr": 179,
+        "image_url": "https://placehold.co/600x800/fef9c3/78350f?text=Gilded+Age",
+        "long_description": "Add a touch of vintage elegance to your work with these printable pages. Featuring ornate, gilded borders and a classic cream background, they are perfect for invitations, certificates, or formal letter writing. PDF format."
     }
 ]
 
@@ -59,7 +103,6 @@ class TokenData(BaseModel):
 app = FastAPI()
 
 # --- CORS Middleware ---
-# This section is updated to be more explicit for better compatibility.
 origins = [
     "null",
     "http://localhost",
@@ -70,20 +113,14 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"], # Explicitly allow OPTIONS
-    allow_headers=["*"], # Allow all headers
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
 )
-
-# --- Helper Functions ---
-def create_access_token(data: dict):
-    to_encode = data.copy()
-    to_encode.update({"exp": time.time() + ACCESS_TOKEN_EXPIRE_MINUTES * 60})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 # --- API Endpoints ---
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to the Aesthetic Notebooks API! Now with products."}
+    return {"message": "Welcome to the Aesthetic Notebooks API! Now with 9 products."}
 
 @app.get("/api/products", response_model=List[Product])
 def get_products():
