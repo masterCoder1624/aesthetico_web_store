@@ -16,48 +16,48 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
 # --- In-Memory Databases ---
 fake_users_db = {}
 
-# UPDATED: Added 6 new products for a total of 9
+# UPDATED: Replaced placeholder URLs with the new image URLs
 fake_products_db = [
     {
         "id": "prod_1",
         "title": "sundar si kitaab",
         "price_inr": 149,
-        "image_url": "https://m.media-amazon.com/images/I/61uWK0fA20L._UF1000,1000_QL80_.jpg",
+        "image_url": "https://tse1.mm.bing.net/th/id/OIP.9_J-OP2Dt0PTGXwdZ5dLQAHaJf?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3",
         "long_description": "A beautifully crafted journal with a vintage butterfly cover. Features 200 pages of high-quality, acid-free paper, perfect for writing, sketching, or dreaming. The lay-flat binding makes it a joy to use."
     },
     {
         "id": "prod_2",
         "title": "pariyo ki rani",
         "price_inr": 249,
-        "image_url": "https://placehold.co/600x800/d1d5db/1f2937?text=Rustic+Feather",
+        "image_url": "https://i5.walmartimages.com/asr/c1982ebe-ffc0-446f-bf67-106736033c24.2e3d829a1e58ef44a775fa3b9dbfb377.jpeg?odnWidth=1000&odnHeight=1000&odnBg=ffffff",
         "long_description": "Embrace your inner wanderer with this pack of 10 digital papers featuring rustic feather designs. Each design is unique and high-resolution, ideal for scrapbooking, card making, or as a background for your digital journal."
     },
     {
         "id": "prod_3",
         "title": "meri jeevan kathaa",
         "price_inr": 199,
-        "image_url": "https://placehold.co/600x800/fecaca/991b1b?text=Floral+Dreams",
+        "image_url": "https://m.media-amazon.com/images/I/81HZ4rCrm6L._SL1500_.jpg",
         "long_description": "Bring your journal to life with these printable pages adorned with delicate floral patterns. This digital download includes 5 unique A4 designs that you can print as many times as you like. Perfect for bullet journaling and daily planning."
     },
     {
         "id": "prod_4",
         "title": "Celestial Dreams Journal",
         "price_inr": 299,
-        "image_url": "https://placehold.co/600x800/1e293b/94a3b8?text=Celestial+Dreams",
+        "image_url": "https://tse2.mm.bing.net/th/id/OIP.FEqlMvOaXSHSX3XFgwifggHaF7?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3",
         "long_description": "Capture the magic of the night sky with this elegant journal. Featuring a deep navy cover with gold foil constellations, it's the perfect companion for stargazers and dreamers alike. Contains 180 dotted pages."
     },
     {
         "id": "prod_5",
         "title": "Minimalist Grid Notebook",
         "price_inr": 189,
-        "image_url": "https://placehold.co/600x800/e5e7eb/4b5563?text=Minimalist+Grid",
+        "image_url": "https://idcreativedesign.co.uk/wp-content/uploads/2023/01/NGSW_printdesign_diaries.jpg",
         "long_description": "For the organized mind, this minimalist notebook features a clean grid layout on every page. Its simple, functional design makes it ideal for note-taking, architectural sketches, or habit tracking. Available in A5 size."
     },
     {
         "id": "prod_6",
         "title": "Forest Wanderer's Log",
         "price_inr": 229,
-        "image_url": "https://placehold.co/600x800/d4d4d8/18181b?text=Forest+Log",
+        "image_url": "https://m.media-amazon.com/images/I/71J1ThweunS.jpg",
         "long_description": "A rustic, durable notebook designed for adventurers. The cover features an embossed pine tree, and its water-resistant pages are perfect for jotting down notes and observations on your travels through nature."
     },
     {
