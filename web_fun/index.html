@@ -40,11 +40,31 @@
         .main-header { background-color: rgba(17, 17, 17, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--border-color); }
         .main-nav { display: flex; justify-content: space-between; align-items: center; padding-top: 1.25rem; padding-bottom: 1.25rem; }
         .logo { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; cursor: pointer; }
-        .nav-links { display: none; }
-        .nav-links a { color: #a0a0a0; transition: color 0.2s ease; position: relative; padding-bottom: 4px; cursor: pointer; font-weight: 500; }
-        .nav-links a:hover { color: white; }
+        
+        .mobile-menu-button { display: block; z-index: 60; margin-left: 0.5rem; }
+        .mobile-menu-button .icon-close { display: none; }
+        
+        .nav-links { 
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--secondary-bg-color);
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transform: translateY(-150%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 40;
+        }
+        .nav-links.mobile-menu-open {
+            transform: translateY(0);
+        }
+        .nav-links a { color: #a0a0a0; transition: color 0.2s ease; position: relative; padding: 0.5rem; cursor: pointer; font-weight: 500; text-align: center; border-radius: 0.5rem;}
+        .nav-links a:hover { color: white; background-color: rgba(255,255,255,0.05); }
         .nav-links a.active { color: white; }
-        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--primary-accent-color); }
         
         .nav-actions { display: flex; align-items: center; }
         .nav-actions button { margin-left: 1.25rem; color: #a0a0a0; transition: color 0.2s ease; }
@@ -139,7 +159,21 @@
         .footer-copyright { color: #666; font-size: 0.875rem; }
 
         @media (min-width: 768px) {
-            .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+            .mobile-menu-button { display: none; }
+            .nav-links {
+                display: flex;
+                flex-direction: row;
+                position: static;
+                transform: none;
+                background: none;
+                border: none;
+                padding: 0;
+                width: auto;
+                gap: 2.5rem;
+            }
+            .nav-links a { text-align: left; padding: 0.5rem 0; }
+            .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--primary-accent-color); }
+
             .hero-section h1 { font-size: 5rem; }
             #product-grid, #catalog-grid { grid-template-columns: repeat(2, 1fr); }
             .product-card:nth-child(2n) { margin-top: 3rem; }
@@ -156,7 +190,7 @@
     <header class="main-header">
         <nav class="main-nav container">
             <div class="logo" id="logo-button">Aesthetica</div>
-            <div class="nav-links">
+            <div class="nav-links" id="mobile-nav-menu">
                 <a id="nav-catalog">Catalog</a>
                 <a id="nav-customized">Customized</a>
                 <a id="nav-about">About</a>
@@ -170,6 +204,10 @@
                 <button class="cart-button" title="Shopping Cart" id="cart-button">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.344 1.087-.849l1.874-6.126A1.875 1.875 0 0018.25 6H5.23a2.25 2.25 0 00-2.115 1.634l-1.875 6.126zM7.5 14.25 6.375 5.25m11.938 9L17.25 5.25" /></svg>
                     <span class="cart-badge">0</span>
+                </button>
+                <button class="mobile-menu-button" id="mobile-menu-button" title="Menu">
+                     <svg class="icon-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 1.8rem; height: 1.8rem;"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+                     <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 1.8rem; height: 1.8rem;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </div>
         </nav>
@@ -292,7 +330,8 @@
                 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
             }, { threshold: 0.1 });
             
-            const navLinks = document.querySelectorAll('.nav-links a');
+            const navLinksContainer = document.getElementById('mobile-nav-menu');
+            const navLinks = navLinksContainer.querySelectorAll('a');
 
             const updateActiveNav = (viewId) => {
                 navLinks.forEach(link => {
@@ -311,6 +350,17 @@
                     updateActiveNav(viewId);
                 }
             };
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const iconOpen = mobileMenuButton.querySelector('.icon-open');
+            const iconClose = mobileMenuButton.querySelector('.icon-close');
+
+            const toggleMobileMenu = () => {
+                const isOpen = navLinksContainer.classList.toggle('mobile-menu-open');
+                iconOpen.style.display = isOpen ? 'none' : 'block';
+                iconClose.style.display = isOpen ? 'block' : 'none';
+            };
+            mobileMenuButton.addEventListener('click', toggleMobileMenu);
 
             const updateCartBadge = () => {
                 const count = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -393,16 +443,22 @@
                      allProducts = await response.json();
                      productGrid.innerHTML = '';
                      catalogGrid.innerHTML = '';
-                     allProducts.slice(0, 3).forEach(product => productGrid.appendChild(renderProductCard(product)));
+                     allProducts.forEach(product => productGrid.appendChild(renderProductCard(product)));
                      allProducts.forEach(product => catalogGrid.appendChild(renderProductCard(product)));
                      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
                 } catch(error) { /* error handling */ }
             })();
 
             document.getElementById('logo-button').addEventListener('click', () => showView('home-view'));
-            document.getElementById('nav-catalog').addEventListener('click', () => showView('catalog-view'));
-            document.getElementById('nav-customized').addEventListener('click', () => showView('customized-view'));
-            document.getElementById('nav-about').addEventListener('click', () => showView('about-view'));
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const viewId = link.id.replace('nav-', '') + '-view';
+                    showView(viewId);
+                    if (navLinksContainer.classList.contains('mobile-menu-open')) {
+                        toggleMobileMenu();
+                    }
+                });
+            });
             document.getElementById('cart-button').addEventListener('click', () => { renderCartPage(); showView('cart-view'); });
             document.querySelectorAll('.back-button').forEach(btn => btn.addEventListener('click', () => showView(btn.dataset.targetView)));
 
@@ -505,5 +561,4 @@
     </script>
 </body>
 </html>
-
 
