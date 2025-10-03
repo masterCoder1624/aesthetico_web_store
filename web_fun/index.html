@@ -92,17 +92,15 @@
         .products-section { background-color: var(--secondary-bg-color); padding-top: 6rem; padding-bottom: 6rem; position: relative; }
         .products-section h2 { font-family: var(--font-serif); font-size: 2.75rem; font-weight: 700; text-align: center; margin-bottom: 4rem; }
         
-        /* UPDATED: Product Grid */
-        #product-grid, #catalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        #product-grid, #catalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
         .product-card { border: 1px solid var(--border-color); background-color: var(--bg-color); border-radius: 0.75rem; overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
         .product-card:hover { transform: translateY(-8px); border-color: rgba(245, 158, 11, 0.5); box-shadow: 0 0 30px rgba(245, 158, 11, 0.1); }
         .product-card img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; transition: transform 0.4s ease; }
         .product-card:hover img { transform: scale(1.05); }
         
-        /* UPDATED: Smaller Card Info */
-        .product-card-info { padding: 1.25rem; }
-        .product-card-info h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
-        .product-card-info p { color: var(--primary-accent-color); font-size: 1rem; font-weight: 600; }
+        .product-card-info { padding: 1rem; }
+        .product-card-info h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .product-card-info p { color: var(--primary-accent-color); font-size: 0.9rem; font-weight: 600; }
 
         .product-detail-content { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: start; }
         .product-detail-image-wrapper { border-radius: 1rem; overflow: hidden; border: 1px solid var(--border-color); }
@@ -180,13 +178,12 @@
 
             .hero-section h1 { font-size: 5rem; }
             
-            /* UPDATED: Tablet and Desktop Grids */
-            #product-grid, #catalog-grid { grid-template-columns: repeat(3, 1fr); }
+            #product-grid, #catalog-grid { grid-template-columns: repeat(4, 1fr); }
             .product-detail-content { grid-template-columns: repeat(2, 1fr); gap: 4rem; }
             .custom-form-container { grid-template-columns: 1fr 1.25fr; align-items: center; padding: 3rem; }
         }
         @media (min-width: 1024px) {
-            #product-grid, #catalog-grid { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+            #product-grid, #catalog-grid { grid-template-columns: repeat(5, 1fr); gap: 1.25rem; }
         }
     </style>
 </head>
