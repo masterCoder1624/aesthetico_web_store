@@ -20,6 +20,17 @@
             --success-color: #22c55e;
         }
 
+        /* Light theme variables */
+        :root[data-theme="light"] {
+            --bg-color: #f8fafc;
+            --text-color: #0f172a;
+            --primary-accent-color: #eab308; /* Yellow */
+            --secondary-bg-color: #ffffff;
+            --border-color: rgba(15, 23, 42, 0.1);
+            --error-color: #dc2626;
+            --success-color: #16a34a;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg-color); font-family: var(--font-sans); color: var(--text-color); -webkit-font-smoothing: antialiased; line-height: 1.6; overflow-x: hidden; }
@@ -74,6 +85,8 @@
         .cart-badge { position: absolute; top: -0.5rem; right: -0.5rem; background-color: var(--primary-accent-color); color: var(--bg-color); font-weight: 600; font-size: 0.75rem; width: 1.25rem; height: 1.25rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; transform: scale(0); transition: transform 0.2s ease; }
         .cart-badge.visible { transform: scale(1); }
         .user-avatar { width: 2.25rem; height: 2.25rem; background-color: var(--primary-accent-color); color: var(--bg-color); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; }
+        .theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 9999px; }
+        :root[data-theme="light"] .nav-actions button:hover { color: #0f172a; }
 
         .page-view { padding-top: 6rem; padding-bottom: 6rem; }
         .page-header { text-align: center; margin-bottom: 4rem; }
@@ -109,6 +122,12 @@
         .product-detail-info .description { color: #a0a0a0; margin-bottom: 2.5rem; line-height: 1.8; }
         .back-button { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; color: #a0a0a0; transition: color 0.2s ease; }
         .back-button:hover { color: white; }
+
+        .catalog-controls { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+        .catalog-controls input, .catalog-controls select { background-color: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 0.5rem; padding: 0.6rem 0.8rem; }
+        @media (min-width: 640px) {
+            .catalog-controls { flex-direction: row; align-items: center; justify-content: space-between; }
+        }
 
         .cart-items-list { display: flex; flex-direction: column; gap: 1.5rem; }
         .cart-item { display: flex; gap: 1.5rem; align-items: center; background-color: var(--secondary-bg-color); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-color); }
@@ -198,6 +217,10 @@
                 <a id="nav-about">About</a>
             </div>
             <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+                    <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21.752 15.002A9.718 9.718 0 0112 21.75a9.75 9.75 0 01-1.372-19.392.75.75 0 01.896.966 8.25 8.25 0 009.252 11.678.75.75 0 01.976.999z"/></svg>
+                    <svg id="icon-sun" class="hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18a6 6 0 100-12 6 6 0 000 12z"/><path fill-rule="evenodd" d="M12 2.25a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V3A.75.75 0 0112 2.25zm0 15.75a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V18.75a.75.75 0 01.75-.75zM4.72 4.72a.75.75 0 011.06 0l1.06 1.06a.75.75 0 11-1.06 1.06L4.72 5.78a.75.75 0 010-1.06zm12.38 12.38a.75.75 0 011.06 0l1.06 1.06a.75.75 0 11-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM2.25 12a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5H3A.75.75 0 012.25 12zm15.75 0a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5H18.75a.75.75 0 01-.75-.75zM4.72 19.28a.75.75 0 011.06 0l1.06-1.06a.75.75 0 11-1.06-1.06L4.72 18.22a.75.75 0 010 1.06zm12.38-12.38a.75.75 0 011.06 0l1.06-1.06a.75.75 0 11-1.06-1.06l-1.06 1.06a.75.75 0 010 1.06z" clip-rule="evenodd"/></svg>
+                </button>
                 <button title="My Account" id="account-button">
                     <div id="account-icon-wrapper">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
@@ -228,6 +251,15 @@
         <section id="catalog-view" class="page-view hidden">
             <div class="container">
                 <div class="page-header"><h1 class="reveal">Full Catalog</h1><p class="reveal">Browse our complete collection of handcrafted digital and physical products.</p></div>
+                <div class="catalog-controls">
+                    <input type="search" id="search-input" placeholder="Search products..." aria-label="Search products">
+                    <select id="price-filter" aria-label="Filter by price">
+                        <option value="all">All prices</option>
+                        <option value="0-199">Under ₹200</option>
+                        <option value="200-249">₹200 - ₹249</option>
+                        <option value="250-100000">₹250 and above</option>
+                    </select>
+                </div>
                 <div id="catalog-grid"></div>
             </div>
         </section>
@@ -286,11 +318,11 @@
         </section>
     </div>
 
-    <div class="auth-modal-overlay" id="auth-modal-overlay">
-        <div class="auth-modal">
+    <div class="auth-modal-overlay" id="auth-modal-overlay" aria-hidden="true">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
             <button class="auth-modal-close" id="auth-modal-close">&times;</button>
             <div id="login-form">
-                 <div class="auth-modal-header"><h2>Welcome Back</h2><p>Log in to access your account.</p></div>
+                 <div class="auth-modal-header"><h2 id="auth-modal-title">Welcome Back</h2><p>Log in to access your account.</p></div>
                 <form class="auth-form" id="login-form-element">
                     <div class="form-group"><label for="login-email">Email Address</label><input type="email" id="login-email" class="form-input" required></div>
                     <div class="form-group"><label for="login-password">Password</label><input type="password" id="login-password" class="form-input" required></div>
@@ -322,15 +354,42 @@
     </footer>
     
     <script>
-        const API_BASE_URL = 'https://aesthetico-web-store.onrender.com';
+        const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:8000'
+            : 'https://aesthetico-web-store.onrender.com';
         
         document.addEventListener('DOMContentLoaded', () => {
             let cart = [];
             let allProducts = [];
+            let filteredProducts = [];
             const cartBadge = document.querySelector('.cart-badge');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
             }, { threshold: 0.1 });
+            // THEME: init from storage or prefers-color-scheme
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const iconMoon = document.getElementById('icon-moon');
+            const iconSun = document.getElementById('icon-sun');
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme);
+                iconMoon.classList.toggle('hidden', theme === 'light');
+                iconSun.classList.toggle('hidden', theme !== 'light');
+            };
+            const storedTheme = localStorage.getItem('aestheticaTheme');
+            if (storedTheme) {
+                applyTheme(storedTheme);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                applyTheme('light');
+            } else {
+                applyTheme('dark');
+            }
+            themeToggleBtn.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme') || 'dark';
+                const next = current === 'dark' ? 'light' : 'dark';
+                applyTheme(next);
+                localStorage.setItem('aestheticaTheme', next);
+            });
+
             
             const navLinksContainer = document.getElementById('mobile-nav-menu');
             const navLinks = navLinksContainer.querySelectorAll('a');
@@ -393,6 +452,25 @@
                 return card;
             };
 
+            const renderCatalog = (products) => {
+                const catalogGrid = document.getElementById('catalog-grid');
+                catalogGrid.innerHTML = '';
+                products.forEach(p => catalogGrid.appendChild(renderProductCard(p)));
+                document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            };
+
+            const applyFilters = () => {
+                const q = (document.getElementById('search-input').value || '').toLowerCase();
+                const priceVal = document.getElementById('price-filter').value;
+                let [minPrice, maxPrice] = priceVal === 'all' ? [0, Number.MAX_SAFE_INTEGER] : priceVal.split('-').map(Number);
+                filteredProducts = allProducts.filter(p => {
+                    const matchesQuery = p.title.toLowerCase().includes(q) || (p.long_description || '').toLowerCase().includes(q);
+                    const matchesPrice = p.price_inr >= minPrice && p.price_inr <= maxPrice;
+                    return matchesQuery && matchesPrice;
+                });
+                renderCatalog(filteredProducts);
+            };
+
             const renderCartPage = () => {
                 const cartContent = document.getElementById('cart-content');
                 if (cart.length === 0) {
@@ -440,16 +518,29 @@
                 const productGrid = document.getElementById('product-grid');
                 const catalogGrid = document.getElementById('catalog-grid');
                 try {
+                     // Skeleton loaders
+                     productGrid.innerHTML = '<div id="loading-state"><p>Loading our collection...</p></div>';
+                     catalogGrid.innerHTML = '<div id="loading-state"><p>Loading catalog...</p></div>';
+
                      const response = await fetch(`${API_BASE_URL}/api/products`);
                      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                      allProducts = await response.json();
                      productGrid.innerHTML = '';
                      catalogGrid.innerHTML = '';
-                     allProducts.forEach(product => productGrid.appendChild(renderProductCard(product)));
-                     allProducts.forEach(product => catalogGrid.appendChild(renderProductCard(product)));
-                     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-                } catch(error) { /* error handling */ }
+                     allProducts.slice(0, 8).forEach(product => productGrid.appendChild(renderProductCard(product)));
+                     filteredProducts = allProducts.slice();
+                     renderCatalog(filteredProducts);
+                } catch(error) {
+                    productGrid.innerHTML = `<div><p style="color: var(--error-color);">Failed to load products. Please try again.</p></div>`;
+                    catalogGrid.innerHTML = `<div><p style="color: var(--error-color);">Failed to load catalog.</p></div>`;
+                }
             })();
+
+            // Catalog filters
+            const searchInput = document.getElementById('search-input');
+            const priceFilter = document.getElementById('price-filter');
+            searchInput.addEventListener('input', applyFilters);
+            priceFilter.addEventListener('change', applyFilters);
 
             document.getElementById('logo-button').addEventListener('click', () => showView('home-view'));
             navLinks.forEach(link => {
@@ -491,10 +582,68 @@
             const loginForm = document.getElementById('login-form');
             const registerForm = document.getElementById('register-form');
             
-            const showModal = () => authModalOverlay.classList.add('visible');
-            const hideModal = () => authModalOverlay.classList.remove('visible');
+            // Accessibility: focus trap inside modal
+            let lastFocusedBeforeModal = null;
+            const getFocusable = (root) => root.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            const onModalKeydown = (e) => {
+                if (e.key === 'Escape') { hideModal(); }
+                if (e.key === 'Tab') {
+                    const focusables = Array.from(getFocusable(authModalOverlay));
+                    const visible = focusables.filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+                    if (visible.length === 0) return;
+                    const first = visible[0];
+                    const last = visible[visible.length - 1];
+                    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+                }
+            };
+            const showModal = () => {
+                lastFocusedBeforeModal = document.activeElement;
+                authModalOverlay.classList.add('visible');
+                authModalOverlay.setAttribute('aria-hidden', 'false');
+                const firstInput = document.getElementById('login-email');
+                setTimeout(() => firstInput && firstInput.focus(), 0);
+                document.addEventListener('keydown', onModalKeydown);
+            };
+            const hideModal = () => {
+                authModalOverlay.classList.remove('visible');
+                authModalOverlay.setAttribute('aria-hidden', 'true');
+                document.removeEventListener('keydown', onModalKeydown);
+                if (lastFocusedBeforeModal) { lastFocusedBeforeModal.focus(); }
+            };
             
-            accountButton.addEventListener('click', showModal);
+            // Auth: token storage & account button behavior
+            let authToken = localStorage.getItem('aestheticaToken') || '';
+            const setUserAvatar = (fullName) => {
+                const accountIconWrapper = document.getElementById('account-icon-wrapper');
+                if (fullName) {
+                    const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase();
+                    accountIconWrapper.innerHTML = `<div class="user-avatar">${initials}</div>`;
+                }
+            };
+            const fetchUserIfLoggedIn = async () => {
+                if (!authToken) return;
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/auth/me`, { headers: { 'Authorization': `Bearer ${authToken}` } });
+                    if (!res.ok) return;
+                    const user = await res.json();
+                    setUserAvatar(user.full_name);
+                } catch {}
+            };
+            fetchUserIfLoggedIn();
+
+            accountButton.addEventListener('click', () => {
+                if (authToken) {
+                    const doLogout = confirm('Log out of your account?');
+                    if (doLogout) {
+                        authToken = '';
+                        localStorage.removeItem('aestheticaToken');
+                        document.getElementById('account-icon-wrapper').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>`;
+                    }
+                } else {
+                    showModal();
+                }
+            });
             closeModalButton.addEventListener('click', hideModal);
             authModalOverlay.addEventListener('click', (e) => { if (e.target === authModalOverlay) hideModal(); });
             showRegisterButton.addEventListener('click', () => { loginForm.style.display = 'none'; registerForm.style.display = 'block'; });
@@ -518,12 +667,10 @@
                     });
                     const data = await response.json();
                     if (!response.ok) throw new Error(data.detail || 'Failed to log in.');
-                    const accountIconWrapper = document.getElementById('account-icon-wrapper');
+                    authToken = data.access_token;
+                    localStorage.setItem('aestheticaToken', authToken);
                     const user = data.user;
-                    if (user && user.full_name) {
-                        const initials = user.full_name.split(' ').map(n => n[0]).join('').toUpperCase();
-                        accountIconWrapper.innerHTML = `<div class="user-avatar">${initials}</div>`;
-                    }
+                    setUserAvatar(user && user.full_name ? user.full_name : '');
                     loginMessage.textContent = 'Login successful!';
                     loginMessage.classList.add('success');
                     setTimeout(hideModal, 1500);
@@ -563,4 +710,5 @@
     </script>
 </body>
 </html>
+
 
