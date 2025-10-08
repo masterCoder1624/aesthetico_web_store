@@ -86,7 +86,12 @@
         .cart-badge.visible { transform: scale(1); }
         .user-avatar { width: 2.25rem; height: 2.25rem; background-color: var(--primary-accent-color); color: var(--bg-color); border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; }
         .theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 9999px; }
+        :root[data-theme="light"] .main-header { background-color: rgba(255,255,255,0.75); }
+        :root[data-theme="light"] .nav-actions button { color: #475569; }
         :root[data-theme="light"] .nav-actions button:hover { color: #0f172a; }
+        :root[data-theme="light"] .nav-links a { color: #334155; }
+        :root[data-theme="light"] .nav-links a:hover { color: #0f172a; background-color: rgba(15,23,42,0.06); }
+        :root[data-theme="light"] .logo { color: var(--text-color); }
 
         .page-view { padding-top: 6rem; padding-bottom: 6rem; }
         .page-header { text-align: center; margin-bottom: 4rem; }
