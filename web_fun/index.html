@@ -552,7 +552,7 @@
     <script>
         const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
             ? 'http://localhost:8000'
-            : 'https://aesthetica-web-store-backend.onrender.com';
+            : 'https://aesthetico-web-store.onrender.com';
         
         // Debug: Log the API URL being used
         console.log('API_BASE_URL:', API_BASE_URL);
@@ -734,8 +734,15 @@
                      `;
 
                      console.log('Fetching from:', `${API_BASE_URL}/api/products`);
-                     const response = await fetch(`${API_BASE_URL}/api/products`);
+                     const response = await fetch(`${API_BASE_URL}/api/products`, {
+                         method: 'GET',
+                         headers: {
+                             'Content-Type': 'application/json',
+                         },
+                         mode: 'cors'
+                     });
                      console.log('Response status:', response.status);
+                     console.log('Response headers:', response.headers);
                      
                      if (!response.ok) {
                          const errorText = await response.text();
@@ -753,8 +760,21 @@
                      renderCatalog(filteredProducts);
                 } catch(error) {
                     console.error('Fetch error:', error);
-                    productGrid.innerHTML = `<div><p style="color: var(--error-color);">Failed to load products: ${error.message}</p></div>`;
-                    catalogGrid.innerHTML = `<div><p style="color: var(--error-color);">Failed to load catalog: ${error.message}</p></div>`;
+                    // Fallback: Show a message and hide loading skeletons
+                    productGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem;">
+                            <h3 style="color: var(--text-color); margin-bottom: 1rem;">Unable to load products</h3>
+                            <p style="color: var(--error-color); margin-bottom: 2rem;">${error.message}</p>
+                            <button class="btn btn-primary" onclick="location.reload()">Retry</button>
+                        </div>
+                    `;
+                    catalogGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem;">
+                            <h3 style="color: var(--text-color); margin-bottom: 1rem;">Unable to load catalog</h3>
+                            <p style="color: var(--error-color); margin-bottom: 2rem;">${error.message}</p>
+                            <button class="btn btn-primary" onclick="location.reload()">Retry</button>
+                        </div>
+                    `;
                 }
             })();
 
