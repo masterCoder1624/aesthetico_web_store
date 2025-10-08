@@ -388,6 +388,9 @@
             ? 'http://localhost:8000'
             : 'https://aesthetico-web-store.onrender.com';
         
+        // Debug: Log the API URL being used
+        console.log('API_BASE_URL:', API_BASE_URL);
+        
         document.addEventListener('DOMContentLoaded', () => {
             let cart = [];
             let allProducts = [];
@@ -552,17 +555,28 @@
                      productGrid.innerHTML = '<div id="loading-state"><p>Loading our collection...</p></div>';
                      catalogGrid.innerHTML = '<div id="loading-state"><p>Loading catalog...</p></div>';
 
+                     console.log('Fetching from:', `${API_BASE_URL}/api/products`);
                      const response = await fetch(`${API_BASE_URL}/api/products`);
-                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                     console.log('Response status:', response.status);
+                     
+                     if (!response.ok) {
+                         const errorText = await response.text();
+                         console.error('API Error:', errorText);
+                         throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+                     }
+                     
                      allProducts = await response.json();
+                     console.log('Products loaded:', allProducts.length);
+                     
                      productGrid.innerHTML = '';
                      catalogGrid.innerHTML = '';
                      allProducts.slice(0, 8).forEach(product => productGrid.appendChild(renderProductCard(product)));
                      filteredProducts = allProducts.slice();
                      renderCatalog(filteredProducts);
                 } catch(error) {
-                    productGrid.innerHTML = `<div><p style="color: var(--error-color);">Failed to load products. Please try again.</p></div>`;
-                    catalogGrid.innerHTML = `<div><p style="color: var(--error-color);">Failed to load catalog.</p></div>`;
+                    console.error('Fetch error:', error);
+                    productGrid.innerHTML = `<div><p style="color: var(--error-color);">Failed to load products: ${error.message}</p></div>`;
+                    catalogGrid.innerHTML = `<div><p style="color: var(--error-color);">Failed to load catalog: ${error.message}</p></div>`;
                 }
             })();
 
